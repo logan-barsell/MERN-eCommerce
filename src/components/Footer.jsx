@@ -1,9 +1,11 @@
 import { Facebook, Instagram, Mail, Phone, Pinterest, Room, Twitter } from '@material-ui/icons'
 import React from 'react'
 import styled from 'styled-components'
+import { mobile, tablet, small } from '../responsive'
 
 const Container = styled.div`
     display: flex;
+    ${tablet({ flexDirection: 'column'})}
 `
 const Left = styled.div`
     flex: 1;
@@ -36,10 +38,12 @@ const SocialIcon = styled.div`
 const Center = styled.div`
     flex: 1;
     padding: 20px;
+    ${small({ display: 'none' })};
 `
 
 const Title = styled.h3`
     margin-bottom: 30px;
+    text-align: ${props=>props.type === 'links' && 'center'};
 `
 
 const List = styled.ul`
@@ -47,17 +51,19 @@ const List = styled.ul`
     padding: 0;
     list-style: none;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    text-align: center;
 `
 
 const ListItem = styled.li`
-    width: 50%;
+    /* width: 50%; */
     margin-bottom: 10px;
 `
 
 const Right = styled.div`
-    flex: 1;
+    flex: 0.5;
     padding: 20px;
+    ${mobile({ backgroundColor: '#fff8f8' })}
 `
 
 const ContactItem = styled.div`
@@ -94,7 +100,7 @@ const Footer = () => {
         </SocialContainer>
       </Left>
       <Center>
-        <Title>Links</Title>
+        <Title type="links">Links</Title>
         <List>
             <ListItem>Home</ListItem>
             <ListItem>Cart</ListItem>
@@ -102,9 +108,6 @@ const Footer = () => {
             <ListItem>Accessories</ListItem>
             <ListItem>My Account</ListItem>
             <ListItem>Orders</ListItem>
-            <ListItem>Wislist</ListItem>
-            <ListItem>About Us</ListItem>
-            <ListItem>Careers</ListItem>
         </List>
       </Center>
       <Right>

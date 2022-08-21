@@ -11,8 +11,8 @@ import { mobile, tablet, small } from '../responsive';
 const Container = styled.div``
 
 const Wrapper = styled.div`
-    padding: 20px;
-    ${mobile({ padding: '10px' })}
+    padding: 30px;
+    ${mobile({ padding: '30px 10px' })}
 `
 
 const Title = styled.h1`

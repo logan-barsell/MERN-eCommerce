@@ -15,7 +15,7 @@ export const sliderItems = [
         title: 'SUMMER SALE',
         desc: `DON'T COMPROMISE ON STYLE! GET 30% OFF ON NEW ARRIVALS`,
         btn: 'SHOP NOW',
-        bg: 'f5fafd'
+        bg: 'snow'
     },
     {
         id: 2,

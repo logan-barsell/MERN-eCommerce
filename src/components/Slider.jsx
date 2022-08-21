@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@material-ui/icons';
 import styled from 'styled-components';
 import { sliderItems } from '../data';
-import { mobile } from '../responsive';
+import { mobile, tablet, small } from '../responsive';
 
 const Container = styled.div`
     width: 100%;
-    height: 100vh;
+    height: 80vh;
     display: flex;
     position: relative;
     overflow: hidden;
-    ${mobile({ display: "none" })}
+    ${small({ height: '60vh' })}
+    ${tablet({ height: '40vh' })}
 `
 
 const Wrapper = styled.div`
@@ -22,37 +23,50 @@ const Wrapper = styled.div`
 
 const Slide = styled.div`
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     display: flex;
     align-items: center;
     background-color: #${props=> props.bg};
+    
 `
 const ImgContainer = styled.div`
     flex: 1;
     height: 100%;
+    ${mobile({ display: "none" })}
 `
 
 const Image = styled.img`
-    height: 80%;
+    height: 100%;
 ` 
 const InfoContainer = styled.div`
     flex: 1;
     padding: 50px;   
+    ${small({ flex: 2 })}
+    ${mobile({ textAlign: 'center'})}
 `
 const Title = styled.h1`
     font-size: 70px;
+    ${small({ fontSize: '50px' })}
+    ${tablet({ fontSize: '35px' })}
 `
 const Desc = styled.p`
     margin: 50px 0px;
     font-size: 20px;
     font-weight: 500;
     letter-spacing: 3px;
+    ${tablet({ margin: '20px 0px' })}
+    ${small({ fontSize: '15px' })}
 `
 const Button = styled.button`
-    padding: 10px;
-    font-size: 20px;
+    padding: 17px;
+    font-size: 25px;
     background-color: transparent;
     cursor: pointer;
+    border-style: double;
+    border-color: tomato;
+    color: salmon;
+    ${tablet({ fontSize: '18px', padding: '13px' })}
+    ${small({ fontSize: '20px', padding: '10px' })}
 `
 
 const Arrow = styled.div`

@@ -2,7 +2,7 @@ import bgPic from '../images/login.jpg'
 
 import React from 'react'
 import styled from 'styled-components'
-import { mobile } from '../responsive'
+import { mobile, small } from '../responsive'
 
 const Container = styled.div`
     width: 100vw;
@@ -17,6 +17,7 @@ const Wrapper = styled.div`
     padding: 20px;
     width: 25%;
     background-color: rgba(255,255,255,0.7);
+    ${small({ width: '50%' })}
     ${mobile({ width: '75%' })}
 
 `

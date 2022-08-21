@@ -4,20 +4,29 @@ import Product from './Product';
 import { popularProducts } from '../data';
 
 const Container = styled.div`
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 30px;
 `
 
-const Products = () => {
+const Title = styled.h1`
+  text-align: center;
+  margin-top: 30px;
+`
+
+const Products = ({title}) => {
   return (
-    <Container>
-      {popularProducts.map((item) => (
-        <Product key={item.id} item={item} />
-      )
-      )}
-    </Container>
+    <>
+      <Title>{title}</Title>
+      <Container>
+        {popularProducts.map((item) => (
+          <Product key={item.id} item={item} />
+        )
+        )}
+      </Container>
+    </>
   )
 }
 

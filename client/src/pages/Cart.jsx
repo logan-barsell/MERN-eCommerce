@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Announcement from '../components/Announcement';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import { Add, Remove } from '@material-ui/icons';
 import { mobile, tablet, small } from '../responsive';
 import StripeCheckout from 'react-stripe-checkout';
 import { userRequest } from '../requestMethods';
 import { useNavigate } from 'react-router-dom';
+import { changeProductQuantity, removeProduct } from '../redux/cartRedux';
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -53,23 +56,31 @@ const TopText = styled.span`
 const Bottom = styled.div`
     display: flex;
     justify-content: space-between;
-    ${tablet({ flexDirection: 'column' })}
+    margin: 50px 0px;
+    ${small({ flexDirection: 'column' })}
 `
 
 const Info = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 33px 0px;
     flex: 3;
     ${small({ flex: 2 })}
 `
 
 const Product = styled.div`
     display: flex;
+    width: 100%;
+    margin-bottom: 50px;
     justify-content: space-between;
-    ${mobile({ flexDirection: 'column' })}
+    ${tablet({ flexDirection: 'column' })}
 `
 
 const ProductDetail = styled.div`
     flex: 2;
     display: flex;
+    justify-content: start;
 `
 
 const Image = styled.img`
@@ -89,6 +100,7 @@ const ProductColor = styled.div`
     width: 20px;
     height: 20px;
     border-radius: 50%;
+    border: 1px solid darkgrey;
     background-color: ${props=> props.color};
 `
 const ProductSize = styled.span``
@@ -98,6 +110,7 @@ const PriceDetail = styled.span`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    ${tablet({marginTop: '33px'})}
 `
 
 const ProductAmountContainer = styled.div`
@@ -114,7 +127,8 @@ const ProductAmount = styled.div`
 const ProductPrice = styled.div`
     font-size: 30px;
     font-weight: 20;
-    ${tablet({ marginBottom: '20px' })}
+    margin-bottom: 20px;
+    /* ${tablet({ marginBottom: '20px' })} */
 `
 
 const Hr = styled.hr`
@@ -127,11 +141,12 @@ const Summary = styled.div`
     flex: 1;
     border: 0.5px solid lightgrey;
     border-radius: 10px;
-    padding: 10px;
-    height: 50vh;
+    padding: 33px;
+    height: 33vh;
     align-self: center;
+    ${small({ width: '50%' })}
     ${tablet({ width: '80%' })}
-`
+    `
 
 const SummaryTitle = styled.div`
     font-weight: 200;
@@ -144,14 +159,25 @@ const SummaryItem = styled.div`
     font-weight: ${props=> props.type === "total" && "500"};
     font-size: ${props=> props.type === "total" && "24px"};
 `
-const SummaryItemText = styled.div``
+const SummaryItemText = styled.div`
+    font-weight: 600;
+`
+
 const SummaryItemPrice = styled.div``
-const Button = styled.button`
+const ButtonStyled = styled.button`
     width: 100%;
     padding: 10px;
     background-color: black;
     color: white;
     font-weight: 600;
+    cursor: pointer;
+`
+const EmptyCart = styled.h2`
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 `
 
 const Cart = () => {
@@ -159,6 +185,7 @@ const Cart = () => {
   const cart = useSelector(state => state.cart);
   const [stripeToken, setStripeToken] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onToken = (token) => {
     setStripeToken(token);
@@ -182,45 +209,64 @@ const Cart = () => {
     };
     stripeToken && makeRequest();
   }, [stripeToken, cart.total, navigate]);
+
+  const removeItem = product => {
+    dispatch(removeProduct(product));
+  };
+
+  const changeQuantity = (product, add) => {
+    if(add) {
+        dispatch(changeProductQuantity({id: product.cartId, quantity: product.quantity + 1}));
+    } else if(!add && product.quantity > 1) {
+        dispatch(changeProductQuantity({id: product.cartId, quantity: product.quantity - 1}));
+    }
+  };
   
   return (
     <Container>
-      <Navbar/>
       <Announcement/>
+      <Navbar/>
         <Wrapper>
             <Title>YOUR ITEMS</Title>
             <Top>
-                <TopButton>CONTINUE SHOPPING</TopButton>
-                <TopTexts>
-                    <TopText>Shopping Cart(2)</TopText>
-                    <TopText>Wishlist(0)</TopText>
-                </TopTexts>
-                <TopButton type="filled">CHECKOUT</TopButton>
+                <TopButton onClick={() => navigate(-1)}>CONTINUE SHOPPING</TopButton>
             </Top>
             <Bottom>
                 <Info>
-                    {cart.products.map(product => (
+                    {cart.products.length ? cart.products.map(product => (
                         <Product>
                             <ProductDetail>
                                 <Image src={product.img} />
                                 <Details>
-                                    <ProductName><b>Product: </b>{product.title}</ProductName>
-                                    <ProductId><b>ID: </b> {product._id}</ProductId>
-                                    <ProductColor color={product.color}/>
-                                    <ProductSize>{product.size}</ProductSize>
+                                    <ProductName>{product.title}</ProductName>
+                                    <ProductSize><b>Size: </b>{product.size}</ProductSize>
+                                    <div style={{display: 'flex'}}>
+                                        <b>Color:&nbsp; </b><ProductColor color={product.color}/>
+                                    </div>
                                 </Details>
                             </ProductDetail>
                             <PriceDetail>
                                 <ProductAmountContainer>
-                                    <Remove/>
+                                    <Remove 
+                                        onClick={() => changeQuantity(product, 0)}
+                                        style={{cursor: 'pointer'}}
+                                    />
                                     <ProductAmount>{product.quantity}</ProductAmount>
-                                    <Add/>
+                                    <Add 
+                                        onClick={() => changeQuantity(product, 1)}
+                                        style={{cursor: 'pointer'}}
+                                    />
                                 </ProductAmountContainer>
                                 <ProductPrice>${product.price * product.quantity}</ProductPrice>
+                                <Button onClick={() => removeItem(product)}variant="contained" color="secondary">
+                                    Remove Item
+                                </Button>
                             </PriceDetail>
                         </Product>
-                    ))}
-                    <Hr/>
+                    ))
+                    :
+                    <EmptyCart>Your Cart is Empty</EmptyCart>
+                    } 
                 </Info>
                 <Summary>
                     <SummaryTitle>ORDER SUMMARY</SummaryTitle>
@@ -233,8 +279,8 @@ const Cart = () => {
                         <SummaryItemPrice>$5.90</SummaryItemPrice>
                     </SummaryItem>
                     <SummaryItem>
-                        <SummaryItemText>Shipping Discount</SummaryItemText>
-                        <SummaryItemPrice>- $5.90</SummaryItemPrice>
+                        <SummaryItemText>Discount</SummaryItemText>
+                        <SummaryItemPrice>-$5.90</SummaryItemPrice>
                     </SummaryItem>
                     <SummaryItem type="total">
                         <SummaryItemText >Total</SummaryItemText>
@@ -250,7 +296,7 @@ const Cart = () => {
                         token={onToken}
                         stripeKey={KEY}
                     >
-                        <Button>CHECKOUT</Button>
+                        <ButtonStyled>CHECKOUT</ButtonStyled>
                     </StripeCheckout>
                 </Summary>
             </Bottom>

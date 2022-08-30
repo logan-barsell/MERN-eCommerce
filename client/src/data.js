@@ -14,24 +14,27 @@ export const sliderItems = [
         img: slider1,
         title: 'SUMMER SALE',
         desc: `DON'T COMPROMISE ON STYLE! GET 30% OFF ON NEW ARRIVALS`,
-        btn: 'SHOP NOW',
-        bg: 'snow'
+        btn: 'NEW ARRIVALS',
+        bg: 'white',
+        link: '#newArrivals'
     },
     {
         id: 2,
         img: slider2,
-        title: 'NEW ARRIVALS',
-        desc: 'TANK TOPS, SHORTS, SKIRTS, AND MORE!',
+        title: 'SUPER DEAL',
+        desc: 'FREE SHIPPING ON ORDERS OVER $50!',
         btn: 'SEE OUR COLLECTIONS',
-        bg: 'fcf1ed'
+        bg: 'white',
+        link: '#categories'
     },
     {
         id: 3,
         img: slider3,
         title: 'BOGO DEAL',
         desc: 'BUY ONE GET ONE FREE',
-        btn: 'SHOP DISCOUNTS',
-        bg: 'fbf0f4'
+        btn: 'SHOP ACCESSORIES',
+        bg: 'white',
+        link: '/products/Accessories'
     },
 ];
 

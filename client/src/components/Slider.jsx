@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@material-ui/icons';
 import styled from 'styled-components';
 import { sliderItems } from '../data';
@@ -99,6 +100,14 @@ const Slider = () => {
             setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0)
         }
     }
+    const clickScroll = (e, el) => {
+        console.log(el);
+        e.preventDefault();
+        const targetEl = document.querySelector(`${el}`);
+        console.log(targetEl);
+        console.log(document.getElementById('newArrivals'))
+        targetEl.scrollIntoView({ behavior: "smooth", block: "center"});
+    }
   return (
     <Container>
       <Arrow 
@@ -116,7 +125,19 @@ const Slider = () => {
                 <InfoContainer>
                     <Title>{item.title}</Title>
                     <Desc>{item.desc}</Desc>
-                    <Button>{item.btn}</Button>
+                    {item.link.includes("#") ? 
+                    <a 
+                        href={item.link}
+                        onClick={(e) => clickScroll(e, item.link)}
+                    >
+                        <Button>{item.btn}</Button>
+                    </a>
+                    :
+                    <Link to={item.link}>
+                        <Button>{item.btn}</Button>
+                    </Link>
+                    }
+                    
                 </InfoContainer>
             </Slide>
         ))}

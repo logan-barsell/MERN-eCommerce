@@ -1,5 +1,5 @@
-import { Badge } from '@material-ui/core';
-import { Search, ShoppingCartOutlined } from '@material-ui/icons';
+import { Badge, Menu, MenuItem, Button } from '@material-ui/core';
+import { Search, ShoppingCartOutlined , DragHandle, HomeOutlined} from '@material-ui/icons';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -22,38 +22,13 @@ const Left = styled.div`
     flex: 1;
     display: flex;
     align-items: center;
-    ${mobile({ display: 'none' })}
 `
 
-const Language = styled.span`
-    font-size: 14px;
-    cursor: pointer;
-    ${tablet({display: "none"})}
-`
-
-const SearchContainer = styled.div`
-    border: 1px solid lightgray;
-    display: flex;
-    align-items: center;
-    margin-left: 25px;
-    padding: 5px;
-    ${tablet({ marginLeft: '0px'})}
-`
 const Input = styled.input`
     border: none;
     ${tablet({ width: '100px' })}
 `
 
-const Center = styled.div`
-    flex: 0.5;
-    text-align: center;
-`
-
-const Logo = styled.h1`
-    font-weight: bold;
-    padding-left: 7px;
-    ${tablet({ fontSize: '24px' })}
-`
 const Right = styled.div`
     flex: 1;
     display: flex;
@@ -62,7 +37,7 @@ const Right = styled.div`
     ${mobile({ flex: 2 })}
 `
 
-const MenuItem = styled.div`
+const MenuItemStyled = styled.div`
     font-size: 14px;
     cursor: pointer;
     margin-left: 25px;
@@ -73,29 +48,88 @@ const MenuItem = styled.div`
 const Navbar = () => {
 
   const quantity = useSelector(state => state.cart.quantity);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Container>
         <Wrapper>
             <Left>
-                <Language>EN</Language>
-                <SearchContainer>
-                    <Input placeholder='Search'/>
-                    <Search style={{color:"grey", fontSize:16}}/>
-                </SearchContainer>
+                <Button
+                    id="basic-button"
+                    aria-controls={open ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={handleClick}
+                >
+                    <DragHandle/>
+                    MENU
+                </Button>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                    }}
+                    elevation={0}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
+                    }}
+                >
+                    <Link to="/">
+                        <MenuItem onClick={handleClose}>
+                                <HomeOutlined/>&nbsp;Home
+                        </MenuItem>
+                    </Link>
+                    <Link to="/products/T-Shirts">
+                        <MenuItem onClick={handleClose}>
+                                T-Shirts
+                        </MenuItem>
+                    </Link>
+                    <Link to="/products/Sweaters">
+                        <MenuItem onClick={handleClose}>
+                                Sweaters
+                        </MenuItem>
+                    </Link>
+                    <Link to="/products/Accessories">
+                        <MenuItem onClick={handleClose}>
+                                Accessories
+                        </MenuItem>
+                    </Link>
+                    <Link to="/cart">
+                        <MenuItem onClick={handleClose}>
+                        <ShoppingCartOutlined/>&nbsp;My Cart
+                        </MenuItem>
+                    </Link>
+                </Menu>
             </Left>
-            <Center>
-                <Logo>myStore</Logo>
-            </Center>
             <Right>
-                <MenuItem>REGISTER</MenuItem>
-                <MenuItem>SIGN IN</MenuItem>
+                <Link to="/register">
+                    <MenuItemStyled>REGISTER</MenuItemStyled>
+                </Link>
+                <Link to="/login">
+                    <MenuItemStyled>SIGN IN</MenuItemStyled>
+                </Link>
                 <Link to="/cart">
-                    <MenuItem>
+                    <MenuItemStyled>
                         <Badge badgeContent={quantity} color="primary">
                             <ShoppingCartOutlined/>
                         </Badge>
-                    </MenuItem>
+                    </MenuItemStyled>
                 </Link>
             </Right>
         </Wrapper>

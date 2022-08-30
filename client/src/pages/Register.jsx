@@ -1,7 +1,10 @@
 import bgPic from '../images/register.jpg';
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Button from '@material-ui/core/Button';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { mobile, small } from '../responsive';
 
 const Container = styled.div`
@@ -43,7 +46,7 @@ const Agreement = styled.span`
     margin: 20px 0px;
 `
 
-const Button = styled.button`
+const StyledButton = styled.button`
     width: 40%;
     border: none;
     padding: 15px 20px;
@@ -54,8 +57,26 @@ const Button = styled.button`
 
 
 const Register = () => {
+  const navigate = useNavigate();
+
   return (
     <Container>
+      <Button 
+        onClick={() => navigate(-1)}
+        style={{
+          position: 'absolute', 
+          top: '33px', 
+          left: '33px', 
+          fontSize: '18px', 
+          backgroundColor: 'rgba(255,255,255,0.6)', 
+          border: 'none', 
+          borderRadius: '0px', 
+          fontWeight: '300'
+        }} 
+        variant="outlined"
+      >
+        <ArrowBackIosIcon/> Go Back
+      </Button>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form>
@@ -66,7 +87,7 @@ const Register = () => {
             <Input placeholder="Password"/>
             <Input placeholder="Confirm Password"/>
             <Agreement>By creating an account, I consent to the processing of my personal data in accordance with the <b>PRIVACY POLICY</b></Agreement>
-            <Button>CREATE</Button>
+            <StyledButton>CREATE</StyledButton>
         </Form>
       </Wrapper>
     </Container>

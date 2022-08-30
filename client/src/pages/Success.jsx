@@ -8,8 +8,8 @@ const Success = () => {
   const location = useLocation();
   const data = location.state.stripeData;
   const cart = location.state.cart;
-//   const currentUser = useSelector((state) => state.user.currentUser);
-  const currentUser = {_id: '234jsdf'};
+  const currentUser = useSelector((state) => state.user.currentUser);
+  // const currentUser = {_id: '234jsdf'};
   const [orderId, setOrderId] = useState(null);
 
   useEffect(() => {

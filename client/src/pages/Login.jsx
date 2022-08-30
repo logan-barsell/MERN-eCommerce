@@ -2,9 +2,12 @@ import bgPic from '../images/login.jpg';
 
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { mobile, small } from '../responsive';
 import { login } from '../redux/apiCalls';
+import Button from '@material-ui/core/Button';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const Container = styled.div`
     width: 100vw;
@@ -40,7 +43,7 @@ const Input = styled.input`
     padding: 10px;
 `
 
-const Button = styled.button`
+const StyledButton = styled.button`
     width: 40%;
     border: none;
     padding: 15px 20px;
@@ -53,7 +56,7 @@ const Button = styled.button`
     }
 `
 
-const Link = styled.a`
+const StyledLink = styled.a`
     font-size: 12px;
     margin: 5px 0px;
     text-decoration: underline;
@@ -63,11 +66,14 @@ const Error = styled.span`
   color: red;
 `
 
+
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const {isFetching, error} = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -76,6 +82,22 @@ const Login = () => {
 
   return (
     <Container>
+      <Button 
+        onClick={() => navigate(-1)}
+        style={{
+          position: 'absolute', 
+          top: '33px', 
+          left: '33px', 
+          fontSize: '18px', 
+          backgroundColor: 'rgba(255,255,255,0.6)', 
+          border: 'none', 
+          borderRadius: '0px', 
+          fontWeight: '300'
+        }} 
+        variant="outlined"
+      >
+        <ArrowBackIosIcon/> Go Back
+      </Button>
       <Wrapper>
         <Title>SIGN IN</Title>
         <Form>
@@ -86,10 +108,10 @@ const Login = () => {
               type="password"
               placeholder="password" 
               onChange={(e) => setPassword(e.target.value)}/>
-            <Button onClick={handleLogin} disabled={isFetching}>LOG IN</Button>
+            <StyledButton onClick={handleLogin} disabled={isFetching}>LOG IN</StyledButton>
             {error && <Error>Something went wrong!</Error>}
-            <Link>FORGOT PASSWORD?</Link>
-            <Link>CREATE A NEW ACCOUNT</Link>
+            <StyledLink>FORGOT PASSWORD?</StyledLink>
+            <StyledLink>CREATE A NEW ACCOUNT</StyledLink>
         </Form>
       </Wrapper>
     </Container>

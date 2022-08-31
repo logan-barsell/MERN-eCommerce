@@ -18,6 +18,7 @@ const Image = styled.img`
 `
 
 const Info = styled.div`
+    background-color: rgba(0, 0, 0, 0.2);
     position: absolute;
     top: 0;
     left: 0;

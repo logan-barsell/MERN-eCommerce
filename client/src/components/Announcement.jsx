@@ -16,6 +16,7 @@ const Logo = styled.h1`
     font-weight: bold;
     padding: 10px;
     text-align: center;
+    font-variant: small-caps;
     ${tablet({ fontSize: '24px' })}
 `
 
@@ -26,7 +27,7 @@ const Announcement = () => {
           Super Deal! Free Shipping on Orders over $50
       </Container>
       <Link to="/">
-          <Logo>myStore</Logo>
+          <Logo>indiLuv</Logo>
       </Link>
     </>
   );

@@ -80,12 +80,6 @@ const Login = () => {
     e.preventDefault();
     login(dispatch, { email, password });
   };
-
-  
-  useEffect(() => {
-  
-  }, []);
-
   
 
   return (

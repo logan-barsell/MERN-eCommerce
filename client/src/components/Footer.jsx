@@ -1,5 +1,6 @@
 import { Facebook, Instagram, Mail, Phone, Pinterest, Room, Twitter } from '@material-ui/icons'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { mobile, tablet, small } from '../responsive'
 
@@ -14,7 +15,9 @@ const Left = styled.div`
     padding: 20px;
 `
 
-const Logo = styled.h1``;
+const Logo = styled.h1`
+    font-variant: small-caps;
+`;
 const Desc = styled.p`
     margin: 20px 0px;
 `;
@@ -80,9 +83,9 @@ const Footer = () => {
   return (
     <Container>
       <Left>
-        <Logo>myStore</Logo>
+        <Logo>indiLuv</Logo>
         <Desc>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eaque, quam modi sint harum atque minus doloremque consectetur quisquam officia rerum necessitatibus eligendi? Eius nam ipsa molestiae, quos harum saepe voluptates!
+            Hello there! We are a small independant retail business specializing in unique vintage and indie-style womens clothing. Think of us like an online thrift store! We carry all sorts of clothing and accessories, so you can find whatever you need to make you feel like you. Enjoy your shopping, and thanks for choosing <b style={{fontVariant: 'small-caps', fontSize: '22px'}}>indiLuv</b>!
         </Desc>
         <SocialContainer>
             <SocialIcon color="3B5999">
@@ -102,12 +105,21 @@ const Footer = () => {
       <Center>
         <Title type="links">Links</Title>
         <List>
-            <ListItem>Home</ListItem>
-            <ListItem>Cart</ListItem>
-            <ListItem>Apparel</ListItem>
-            <ListItem>Accessories</ListItem>
-            <ListItem>My Account</ListItem>
-            <ListItem>Orders</ListItem>
+            <Link to="/">
+                <ListItem>Home</ListItem>
+            </Link>
+            <Link to="/products/T-Shirts">
+                <ListItem>T-Shirts</ListItem>
+            </Link>
+            <Link to="/products/Sweaters">
+                <ListItem>Sweaters</ListItem>
+            </Link>
+            <Link to="/products/Accessories">
+                <ListItem>Accessories</ListItem>
+            </Link>
+            <Link to="/cart">
+                <ListItem>My Cart</ListItem>
+            </Link>
         </List>
       </Center>
       <Right>

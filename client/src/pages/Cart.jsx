@@ -1,3 +1,5 @@
+import heart from '../images/heart.jpg'
+
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -190,6 +192,8 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const totalPrice = cart.total > 50 ? cart.total - 5 : cart.total;
+
   const onToken = (token) => {
     setStripeToken(token);
   };
@@ -287,15 +291,15 @@ const Cart = () => {
                     </SummaryItem>
                     <SummaryItem type="total">
                         <SummaryItemText >Total</SummaryItemText>
-                        <SummaryItemPrice>${cart.total > 50 ? cart.total - 5 : cart.total}</SummaryItemPrice>
+                        <SummaryItemPrice>${totalPrice}</SummaryItemPrice>
                     </SummaryItem>
                     <StripeCheckout
-                        name="myStore"
-                        image="https://avatars.githubusercontent.com/u/1486366?v=4"
+                        name="indiLuv"
+                        image={heart}
                         billingAddress
                         shippingAddress
-                        description={`Your total is $${cart.total}`}
-                        amount={cart.total * 100}
+                        description={`Your total is $${totalPrice}`}
+                        amount={totalPrice * 100}
                         token={onToken}
                         stripeKey={KEY}
                         disabled={!cart.total}

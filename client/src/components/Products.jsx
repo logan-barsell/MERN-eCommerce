@@ -20,7 +20,7 @@ const Hr = styled.hr`
     background-color: #eee;
     border: none;
     width: 80%;
-    
+    margin: auto;
     height: 1px;
 `
 
@@ -73,7 +73,7 @@ const Products = ({title, cat, filters, sort}) => {
   return (
     <>
       <Title>{title}</Title>
-      <Hr/>
+      {window.location.pathname !== '/' && <Hr/>}
       <Container>
         {cat ? filteredProducts.map((item) => (
           <Product key={item._id} item={item} />

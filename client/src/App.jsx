@@ -1,4 +1,5 @@
 import './app.css';
+import ScrollToTop from './components/ScrollToTop';
 
 import {
   BrowserRouter as Router,
@@ -19,6 +20,7 @@ const App = () => {
   const user = useSelector(state => state.user.currentUser);
   return (
     <Router>
+      <ScrollToTop/>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/products/:category" element={<ProductList/>}/>

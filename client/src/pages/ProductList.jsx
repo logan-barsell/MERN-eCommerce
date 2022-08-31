@@ -63,6 +63,7 @@ const ProductList = () => {
           </FilterText>
           <Select name="color" onChange={handleFilters}>
             <Option disabled>Color</Option>
+            <Option value='All'>All Colors</Option>
             <Option>White</Option>
             <Option>Black</Option>
             <Option>Red</Option>
@@ -72,6 +73,7 @@ const ProductList = () => {
           </Select>
           <Select name="size" onChange={handleFilters}>
             <Option disabled>Size</Option>
+            <Option value='All'>All Sizes</Option>
             <Option>XS</Option>
             <Option>S</Option>
             <Option>M</Option>

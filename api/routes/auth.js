@@ -6,7 +6,8 @@ const jwt = require('jsonwebtoken');
 //REGISTER
 router.post('/register', async (req, res) => {
     const newUser = new User({
-        username: req.body.username,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         email: req.body.email,
         password: CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SECRET).toString()
     });
@@ -21,22 +22,25 @@ router.post('/register', async (req, res) => {
 //LOGIN
 router.post('/login', async (req, res) => {
     try{
-        const user = await User.findOne({username: req.body.username});
-        !user && res.status(401).json("Wrong credentials!");
-
+        const user = await User.findOne({email: req.body.email});
+        if(!user) {
+            res.status(401).send("Wrong Email!");
+            return;
+        } 
+        
         const hashedPassword = CryptoJS.AES.decrypt(user.password, process.env.PASS_SECRET);
         const passwordString = hashedPassword.toString(CryptoJS.enc.Utf8);
-        passwordString !== req.body.password && 
-            res.status(401).json("Wrong credentials!");
-
+        if(passwordString !== req.body.password) {
+            res.status(401).json("Wrong Password!");
+            return;
+        } 
         const accessToken = jwt.sign({
-            id: user._id, isAdmin: user.isAdmin
-        }, 
-        process.env.JWT_SECRET_KEY,
-        {expiresIn: '3d'}
+                id: user._id, isAdmin: user.isAdmin
+            }, 
+            process.env.JWT_SECRET_KEY,
+            {expiresIn: '3d'}
         );
         const { password, ...others } = user._doc;
-
         res.status(200).json({...others, accessToken});
     } catch (err) {
         res.status(500).json(err);

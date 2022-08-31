@@ -16,6 +16,13 @@ const Title = styled.h1`
   text-align: center;
   margin-top: 30px;
 `
+const Hr = styled.hr`
+    background-color: #eee;
+    border: none;
+    width: 80%;
+    
+    height: 1px;
+`
 
 const Products = ({title, cat, filters, sort}) => {
 
@@ -38,12 +45,15 @@ const Products = ({title, cat, filters, sort}) => {
     cat && setFilteredProducts(
       products.filter(item => 
         Object.entries(filters).every(([key, value]) =>
+          value === "All" ?
+          true
+          :
           item[key].includes(value)
         )
       )
     );
   }, [products, cat, filters]);
-
+  
   useEffect(() => {
     if(sort === 'newest') {
       setFilteredProducts(prev =>
@@ -63,6 +73,7 @@ const Products = ({title, cat, filters, sort}) => {
   return (
     <>
       <Title>{title}</Title>
+      <Hr/>
       <Container>
         {cat ? filteredProducts.map((item) => (
           <Product key={item._id} item={item} />
@@ -70,6 +81,7 @@ const Products = ({title, cat, filters, sort}) => {
           <Product key={item._id} item={item} />
         ))
         }
+        {!products.length && <h1 style={{width: '100%', textAlign: 'center', margin: '100px 0px'}}>NO PRODUCTS FOUND</h1>}
       </Container>
     </>
   )

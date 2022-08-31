@@ -1,9 +1,10 @@
 import { Badge, Menu, MenuItem, Button } from '@material-ui/core';
-import { Search, ShoppingCartOutlined , DragHandle, HomeOutlined} from '@material-ui/icons';
+import { ShoppingCartOutlined , DragHandle, HomeOutlined} from '@material-ui/icons';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { logout } from '../redux/userRedux';
 import {mobile, tablet, small } from '../responsive';
 
 const Container = styled.div`
@@ -44,11 +45,21 @@ const MenuItemStyled = styled.div`
     ${small({ marginLeft: '10px' })}
     ${tablet({ fontSize: '12px' })}
 `
+const Welcome = styled.b`
+    ${mobile({ display: 'none'})}
+`
 
 const Navbar = () => {
-
+  const user = useSelector(state => state.user.currentUser);
   const quantity = useSelector(state => state.cart.quantity);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    console.log('logout')
+  }
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -89,6 +100,7 @@ const Navbar = () => {
                       vertical: 'top',
                       horizontal: 'center',
                     }}
+                    style={{backgroundColor: 'rgb(0,0,0, 0.3)', color: 'rgba(0, 0, 0, 0.8)', fontWeight: '300'}}
                 >
                     <Link to="/">
                         <MenuItem onClick={handleClose}>
@@ -118,12 +130,22 @@ const Navbar = () => {
                 </Menu>
             </Left>
             <Right>
-                <Link to="/register">
-                    <MenuItemStyled>REGISTER</MenuItemStyled>
-                </Link>
-                <Link to="/login">
-                    <MenuItemStyled>SIGN IN</MenuItemStyled>
-                </Link>
+                {
+                    user ?
+                    <>
+                        <Welcome>Welcome, {user.firstName}!</Welcome>
+                        <MenuItemStyled onClick={handleLogout}>Log Out</MenuItemStyled>
+                    </>
+                    :
+                    <>
+                        <Link to="/register">
+                            <MenuItemStyled>REGISTER</MenuItemStyled>
+                        </Link>
+                        <Link to="/login">
+                            <MenuItemStyled>SIGN IN</MenuItemStyled>
+                        </Link>
+                    </>
+                }
                 <Link to="/cart">
                     <MenuItemStyled>
                         <Badge badgeContent={quantity} color="primary">

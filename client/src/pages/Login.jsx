@@ -2,12 +2,13 @@ import bgPic from '../images/login.jpg';
 
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { mobile, small } from '../responsive';
 import { login } from '../redux/apiCalls';
 import Button from '@material-ui/core/Button';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { useEffect } from 'react';
 
 const Container = styled.div`
     width: 100vw;
@@ -69,21 +70,28 @@ const Error = styled.span`
 
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const {isFetching, error} = useSelector((state) => state.user);
+  let {isFetching, error} = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
+    login(dispatch, { email, password });
   };
+
+  
+  useEffect(() => {
+  
+  }, []);
+
+  
 
   return (
     <Container>
       <Button 
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/')}
         style={{
           position: 'absolute', 
           top: '33px', 
@@ -102,16 +110,19 @@ const Login = () => {
         <Title>SIGN IN</Title>
         <Form>
             <Input 
-              placeholder="username"
-              onChange={(e) => setUsername(e.target.value)}/>
+              placeholder="Email"
+              required
+              onChange={(e) => setEmail(e.target.value)}/>
             <Input 
               type="password"
-              placeholder="password" 
+              placeholder="Password" 
+              required
               onChange={(e) => setPassword(e.target.value)}/>
             <StyledButton onClick={handleLogin} disabled={isFetching}>LOG IN</StyledButton>
             {error && <Error>Something went wrong!</Error>}
-            <StyledLink>FORGOT PASSWORD?</StyledLink>
-            <StyledLink>CREATE A NEW ACCOUNT</StyledLink>
+            <Link to="/register">
+              <StyledLink type="submit">CREATE A NEW ACCOUNT</StyledLink>
+            </Link>
         </Form>
       </Wrapper>
     </Container>

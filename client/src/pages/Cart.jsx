@@ -66,13 +66,14 @@ const Info = styled.div`
     flex-direction: column;
     margin: 33px 0px;
     flex: 3;
+    justify-content: center;
     ${small({ flex: 2 })}
 `
 
 const Product = styled.div`
     display: flex;
     width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 75px;
     justify-content: space-between;
     ${tablet({ flexDirection: 'column' })}
 `
@@ -81,10 +82,12 @@ const ProductDetail = styled.div`
     flex: 2;
     display: flex;
     justify-content: start;
+    ${tablet({justifyContent: 'center'})}
 `
 
 const Image = styled.img`
-    width: 200px;
+    width: 150px;
+    margin-right: 20px;
 `
 const Details = styled.div`
     padding: 20px;
@@ -276,25 +279,26 @@ const Cart = () => {
                     </SummaryItem>
                     <SummaryItem>
                         <SummaryItemText>Estimated Shipping</SummaryItemText>
-                        <SummaryItemPrice>$5.90</SummaryItemPrice>
+                        <SummaryItemPrice>$5.00</SummaryItemPrice>
                     </SummaryItem>
                     <SummaryItem>
                         <SummaryItemText>Discount</SummaryItemText>
-                        <SummaryItemPrice>-$5.90</SummaryItemPrice>
+                        <SummaryItemPrice>-${cart.total > 50 ? '5.00' : '0.00'}</SummaryItemPrice>
                     </SummaryItem>
                     <SummaryItem type="total">
                         <SummaryItemText >Total</SummaryItemText>
-                        <SummaryItemPrice>${cart.total}</SummaryItemPrice>
+                        <SummaryItemPrice>${cart.total > 50 ? cart.total - 5 : cart.total}</SummaryItemPrice>
                     </SummaryItem>
                     <StripeCheckout
                         name="myStore"
                         image="https://avatars.githubusercontent.com/u/1486366?v=4"
                         billingAddress
                         shippingAddress
-                        description={`Your total is ${cart.total}`}
+                        description={`Your total is $${cart.total}`}
                         amount={cart.total * 100}
                         token={onToken}
                         stripeKey={KEY}
+                        disabled={!cart.total}
                     >
                         <ButtonStyled>CHECKOUT</ButtonStyled>
                     </StripeCheckout>

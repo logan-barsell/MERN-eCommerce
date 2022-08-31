@@ -1,6 +1,8 @@
-import { Add, Remove } from '@material-ui/icons'
+import { Add, Remove } from '@material-ui/icons';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Button from '@material-ui/core/Button';
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Announcement from '../components/Announcement';
 import Footer from '../components/Footer';
@@ -16,7 +18,7 @@ const Container = styled.div``
 const Wrapper = styled.div`
     padding: 50px;
     display: flex;
-    ${small({ padding: '25px', flexDirection: 'column' })}
+    ${small({ padding: '65px 25px', flexDirection: 'column' })}
 `
 
 const ImgContainer = styled.div`
@@ -25,11 +27,11 @@ const ImgContainer = styled.div`
     justify-content: center;
 `
 const Image = styled.img`
-    width: 100%;
-    height: 90vh;
+    width: 450px;
+    margin: 33px 0px;
     object-fit: cover;
-    ${small({ height: '60vh', width: '50%' })}
-    ${mobile({ height: '40vh', width: '90%' })}
+    ${small({ width: '50%' })}
+    ${mobile({ width: '90%' })}
 `
 const InfoContainer = styled.div`
     display: flex;
@@ -72,9 +74,14 @@ const FilterColor = styled.div`
     width: 20px;
     height: 20px;
     border-radius: 50%;
+    border: ${props => props.color === props.selected ? '3px solid teal' : '1px solid darkgrey'};
     background-color: ${props => props.color};
     margin: 0px 5px;
     cursor: pointer;
+    transition: all 200ms ease;
+    &:hover {
+        opacity: 0.5;
+    }
 `
 
 const FilterSize = styled.select`
@@ -109,7 +116,7 @@ const Amount = styled.span`
     margin: 0px 5px;
 `
 
-const Button = styled.button`
+const StyledButton = styled.button`
     padding: 15px;
     border: 2px solid teal;
     background-color: white;
@@ -122,20 +129,23 @@ const Button = styled.button`
 `
 
 const Product = () => {
-
   const location = useLocation();
   const id = location.pathname.split('/')[2];
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState(null);
   const [size, setSize] = useState(null);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProduct = async () => {
         try {
             const res = await publicRequest.get('/products/find/' + id);
             setProduct(res.data);
+            setColor(res.data.color[0]);
+            setSize(res.data.size[0]);
         } catch (err) {
             console.log(err);
         }
@@ -143,10 +153,13 @@ const Product = () => {
     getProduct();
   }, [id]);
 
+
+
   const renderColors = () => product.color?.map(c => 
     (<FilterColor 
         onClick={() => setColor(c)}
-        color={c} 
+        color={c}
+        selected={color} 
         key={c}
     />)
   );
@@ -166,13 +179,28 @@ const handleQuantity = type => {
 
 const handleClick = () => {
     dispatch(addProduct({...product, quantity, color, size}));
+    navigate('/cart');
 };
   
   return (
     <Container>
         <Announcement/>
         <Navbar/>
-
+        <Button 
+         onClick={() => navigate(-1)}
+         style={{ 
+          top: '33px', 
+          left: '33px', 
+          fontSize: '18px', 
+          backgroundColor: 'rgba(0,0,0,0.03)', 
+          border: 'none', 
+          borderRadius: '0px', 
+          fontWeight: '300'
+        }} 
+        variant="outlined"
+      >
+        <ArrowBackIosIcon/> Go Back
+      </Button>
         { product ? 
             <Wrapper>
                 <ImgContainer>
@@ -200,7 +228,7 @@ const handleClick = () => {
                             <Amount>{quantity}</Amount>
                             <Add onClick={() => handleQuantity('inc')}/>
                         </AmountContainer>
-                        <Button onClick={handleClick}>Add to Cart</Button>
+                        <StyledButton onClick={handleClick}>Add to Cart</StyledButton>
                     </AddContainer>
                 </InfoContainer>
             </Wrapper>

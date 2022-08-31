@@ -1,11 +1,13 @@
 import bgPic from '../images/register.jpg';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { mobile, small } from '../responsive';
+import { register } from '../redux/apiCalls';
 
 const Container = styled.div`
     width: 100vw;
@@ -57,12 +59,25 @@ const StyledButton = styled.button`
 
 
 const Register = () => {
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleRegister = e => {
+    e.preventDefault();
+    const newUser = {
+      firstName, lastName, email, password
+    };
+    register(dispatch, newUser);
+  }
 
   return (
     <Container>
       <Button 
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/')}
         style={{
           position: 'absolute', 
           top: '33px', 
@@ -80,14 +95,29 @@ const Register = () => {
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form>
-            <Input placeholder="Name"/>
-            <Input placeholder="Last Name"/>
-            <Input placeholder="Username"/>
-            <Input placeholder="Email"/>
-            <Input placeholder="Password"/>
-            <Input placeholder="Confirm Password"/>
+            <Input 
+              placeholder="First Name" 
+              required
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <Input 
+              placeholder="Last Name" 
+              required
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            <Input 
+              placeholder="Email" 
+              required
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input 
+              type="password" 
+              placeholder="Password" 
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <Agreement>By creating an account, I consent to the processing of my personal data in accordance with the <b>PRIVACY POLICY</b></Agreement>
-            <StyledButton>CREATE</StyledButton>
+            <StyledButton onClick={handleRegister}>CREATE</StyledButton>
         </Form>
       </Wrapper>
     </Container>

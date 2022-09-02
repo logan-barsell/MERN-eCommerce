@@ -1,4 +1,3 @@
-import { AddShoppingCartOutlined, FavoriteBorderOutlined, SearchOutlined } from '@material-ui/icons'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -14,20 +13,18 @@ const HoverSelect = styled.div`
     background-color: rgba(0,0,0,0.2);
     transition: all 0.5s ease;
     cursor: pointer;
-    
 `
 
 const Container = styled.div`
-    flex: 1;
     margin: 5px;
-    min-width: 300px;
-    height: 350px;
+    width: 100%;
+    height: 307px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #f5fbfd;
     position: relative;
-
+    flex-direction: column;
     &:hover ${HoverSelect}{
         opacity: 1;
     }
@@ -35,7 +32,18 @@ const Container = styled.div`
 
 const Image = styled.img`
     height: 75%;
-    border-radius: 50%;
+    border-radius: 3px;
+`
+
+const Name = styled.div`
+    margin-top: 13px;
+    font-size: 20px;
+`
+
+const Cost = styled.span`
+  margin-left: 9px;
+  font-weight: 800;
+  color: teal;
 `
 
 
@@ -44,6 +52,10 @@ const Product = ({ item }) => {
   return (
     <Container>
       <Image src={item.img} />
+      <Name>
+        {item.title}
+        <Cost>{item.price}</Cost>
+      </Name>
       <Link to={`/product/${item._id}`}>
       <HoverSelect>
       </HoverSelect>

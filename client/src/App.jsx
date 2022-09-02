@@ -1,6 +1,6 @@
 import './app.css';
 import ScrollToTop from './components/ScrollToTop';
-
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -18,6 +18,7 @@ import Success from './pages/Success';
 
 const App = () => {
   const user = useSelector(state => state.user.currentUser);
+
   return (
     <Router>
       <ScrollToTop/>

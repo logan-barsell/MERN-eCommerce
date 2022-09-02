@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import { clearCart } from "../redux/cartRedux";
 import { userRequest } from "../requestMethods";
 
 const Success = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const data = location.state.stripeData;
   const cart = location.state.cart;
   const currentUser = useSelector((state) => state.user.currentUser);
-  // const currentUser = {_id: '234jsdf'};
   const [orderId, setOrderId] = useState(null);
 
   useEffect(() => {
@@ -29,6 +30,13 @@ const Success = () => {
     };
     data && createOrder();
   }, [cart, data, currentUser]);
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if(path.includes('success')) {
+      dispatch(clearCart());
+    }
+  })
 
   return (
     <div

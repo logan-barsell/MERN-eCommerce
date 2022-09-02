@@ -28,7 +28,7 @@ const Slide = styled.div`
     display: flex;
     align-items: center;
     background-color: #${props=> props.bg};
-    
+    ${mobile({ backgroundImage: props => `url(${props.img})`, backgroundSize: 'cover', backgroundPosition: 'center', color: 'white', textShadow: '0px 0px 5px rgba(0,0,0,0.4)' })}
 `
 const ImgContainer = styled.div`
     flex: 1;
@@ -43,7 +43,7 @@ const InfoContainer = styled.div`
     flex: 1;
     padding: 50px;   
     ${small({ flex: 2 })}
-    ${mobile({ textAlign: 'center'})}
+    ${mobile({ textAlign: 'center', height: '100%', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.3)'})}
 `
 const Title = styled.h1`
     font-size: 70px;
@@ -68,6 +68,7 @@ const Button = styled.button`
     color: salmon;
     ${tablet({ fontSize: '18px', padding: '13px' })}
     ${small({ fontSize: '20px', padding: '10px' })}
+    ${mobile({ borderColor: 'rgb(252 245 245)', backgroundColor: 'rgba(252, 245, 245, 0.2)', color: 'rgb(252 245 245)'})}
 `
 
 const Arrow = styled.div`
@@ -87,6 +88,7 @@ const Arrow = styled.div`
     cursor: pointer;
     opacity: 0.5;
     z-index: 2;
+    ${mobile({width: '35px', height: '35px'})}
 `
 
 const Slider = () => {
@@ -118,7 +120,7 @@ const Slider = () => {
       </Arrow>
       <Wrapper slideIndex={slideIndex}>
         {sliderItems.map(item => (
-            <Slide key={item.id} bg={item.bg}>
+            <Slide key={item.id} bg={item.bg} img={item.img}>
                 <ImgContainer>
                     <Image src={item.img}/>
                 </ImgContainer>

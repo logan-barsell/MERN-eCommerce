@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Product from './Product';
-import { popularProducts } from '../data';
 
 const Container = styled.div`
   padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-gap: 20px;
   margin-bottom: 30px;
 `
 
@@ -24,22 +23,23 @@ const Hr = styled.hr`
     height: 1px;
 `
 
-const Products = ({title, cat, filters, sort}) => {
+const Products = ({ products, title, cat, filters, sort}) => {
+  // const [products, setProducts] = useState([]);
+  
 
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const res = await axios.get( cat ? `http://localhost:5000/api/products?category=${cat}` : 'http://localhost:5000/api/products');
-        setProducts(res.data);
-      } catch (err) {
+  // useEffect(() => {
+  //   const getProducts = async () => {
+  //     try {
+  //       const res = await axios.get( cat ? `/api/products?category=${cat}` : `/api/products/`);
+  //       setProducts(res.data);
+  //     } catch (err) {
         
-      }
-    }
-    getProducts();
-  }, [cat]);
+  //     }
+  //   }
+  //   getProducts();
+  // }, [cat]);
+
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
     cat && setFilteredProducts(
@@ -84,7 +84,7 @@ const Products = ({title, cat, filters, sort}) => {
         {!products.length && <h1 style={{width: '100%', textAlign: 'center', margin: '100px 0px'}}>NO PRODUCTS FOUND</h1>}
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Products
+export default Products;

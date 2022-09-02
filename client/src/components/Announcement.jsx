@@ -17,7 +17,8 @@ const Logo = styled.h1`
     padding: 10px;
     text-align: center;
     font-variant: small-caps;
-    ${tablet({ fontSize: '24px' })}
+    font-size: 45px;
+    ${tablet({ fontSize: '35px' })}
 `
 
 const Announcement = () => {

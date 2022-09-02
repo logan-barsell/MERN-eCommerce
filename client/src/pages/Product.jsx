@@ -12,6 +12,7 @@ import { mobile, tablet, small } from '../responsive';
 import { publicRequest } from '../requestMethods';
 import { addProduct } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
 const Container = styled.div``
 
@@ -87,9 +88,12 @@ const FilterColor = styled.div`
 const FilterSize = styled.select`
     margin-left: 10px;
     padding: 5px;
+    color: black;
 `
 
-const FilterSizeOption = styled.option``
+const FilterSizeOption = styled.option`
+    color: black;
+`
 
 const AddContainer = styled.div`
     display: flex;
@@ -122,7 +126,7 @@ const StyledButton = styled.button`
     background-color: white;
     cursor: pointer;
     font-weight: 500;
-
+    color: black;
     &:hover {
         background-color: #f8f4f4;
     }
@@ -142,7 +146,7 @@ const Product = () => {
   useEffect(() => {
     const getProduct = async () => {
         try {
-            const res = await publicRequest.get('/products/find/' + id);
+            const res = await axios.get('/api/products/find/' + id);
             setProduct(res.data);
             setColor(res.data.color[0]);
             setSize(res.data.size[0]);

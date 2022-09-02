@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import styled from 'styled-components'
-import Announcement from '../components/Announcement'
-import Footer from '../components/Footer'
-import Navbar from '../components/Navbar'
-import Newsletter from '../components/Newsletter'
-import Products from '../components/Products'
-import { small } from '../responsive'
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import Announcement from '../components/Announcement';
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+import Newsletter from '../components/Newsletter';
+import Products from '../components/Products';
+import { small } from '../responsive';
 
 const Container = styled.div``
 
@@ -32,10 +33,11 @@ const FilterText = styled.span`
 const Select = styled.select`
   padding: 10px;
   margin-right: 20px;
+  color: black;
   ${small({ margin: '5px 0px', padding: '7px' })}
 `
 const Option = styled.option`
-  
+  color: black;
 `
 
 const ProductList = () => {
@@ -43,6 +45,19 @@ const ProductList = () => {
   const cat = location.pathname.split('/')[2];
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState('newest');
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await axios.get(`/api/products?category=${cat}`);
+        setProducts(res.data);
+      } catch (err) {
+        
+      }
+    }
+    getProducts();
+  }, [cat]);
 
   const handleFilters = (e) => {
     const value = e.target.value;
@@ -51,6 +66,33 @@ const ProductList = () => {
       [e.target.name]: value
     });
   };
+
+  const [colors, setColors] = useState([]);
+  useEffect(() => {
+    const availableColors = [];
+    products.map(product => {
+      return product.color.map(c => {
+        if(!availableColors.includes(c)) {
+          availableColors.push(c);
+        }
+      });
+    });
+    setColors(availableColors);
+  }, [colors]);
+
+  const [sizes, setSizes] = useState([]);
+  useEffect(() => {
+    const availableSizes = [];
+    products.map(product => {
+      return product.size.map(s => {
+        if(!availableSizes.includes(s)) {
+          availableSizes.push(s);
+        }
+      });
+    });
+    setSizes(availableSizes);
+  }, [sizes]);
+  
 
   return (
     <Container>
@@ -65,21 +107,12 @@ const ProductList = () => {
           <Select name="color" onChange={handleFilters}>
             <Option disabled>Color</Option>
             <Option value='All'>All Colors</Option>
-            <Option>white</Option>
-            <Option>black</Option>
-            <Option>red</Option>
-            <Option>blue</Option>
-            <Option>yellow</Option>
-            <Option>green</Option>
+            {colors.map(c => <Option value={c}>{c[0].toUpperCase() + c.substring(1)}</Option>)}
           </Select>
           <Select name="size" onChange={handleFilters}>
             <Option disabled>Size</Option>
             <Option value='All'>All Sizes</Option>
-            <Option>XS</Option>
-            <Option>SM</Option>
-            <Option>MD</Option>
-            <Option>LG</Option>
-            <Option>XL</Option>
+            {sizes.map(s => <Option value={s}>{s}</Option>)}
           </Select>
         </Filter>
         <Filter>
@@ -93,7 +126,7 @@ const ProductList = () => {
           </Select>
         </Filter>
       </FilterContainer>
-      <Products cat={cat} filters={filters} sort={sort} />
+      <Products products={products} cat={cat} filters={filters} sort={sort} />
       <Newsletter/>
       <Footer/>
     </Container>

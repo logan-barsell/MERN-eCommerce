@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import Announcement from '../components/Announcement';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { Add, Remove } from '@material-ui/icons';
 import { mobile, tablet, small } from '../responsive';
@@ -42,7 +41,7 @@ const TopButton = styled.button`
     cursor: pointer;
     border: ${props=>props.type=== 'filled' && 'none'};
     background-color: ${props=>props.type=== 'filled' ? 'black' : 'transparent'};
-    color: ${props=>props.type=== 'filled' && 'white'};
+    color: ${props=>props.type === 'filled' ? 'white' : 'black'};
 `
 
 const TopTexts = styled.div`
